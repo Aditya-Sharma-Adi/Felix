@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class touchCam : MonoBehaviour
 {
-    public bool touchActive;
+    public bool touchActive; //for touchPad
     Vector3 FirstPoint;
     Vector3 SecondPoint;
     float xAngle;
@@ -24,12 +24,12 @@ public class touchCam : MonoBehaviour
 
     public void pointerUP()
     {
-        touchActive = false;
+        touchActive = false; // when we not touch the touchPad
     }
 
     public void pointerDown()
     {
-        touchActive = true;
+        touchActive = true; // when we touch the touchPad
     }
 
    
