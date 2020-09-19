@@ -51,7 +51,7 @@ public class touchCam : MonoBehaviour
                    SecondPoint = Input.GetTouch(0).position;
                    xAngle = xAngleTemp + (SecondPoint.x - FirstPoint.x) * 180 / Screen.width;
                    yAngle = yAngleTemp + (SecondPoint.y - FirstPoint.y) * 90 / Screen.height;
-                   yAngle = Mathf.Clamp(yAngle, -45, 45);
+                   yAngle = Mathf.Clamp(yAngle, -45, 45); //Restrict camera movement in vertical direction
                   this.transform.rotation = Quaternion.Euler(-yAngle, xAngle, 0.0f);
                    
                 }
