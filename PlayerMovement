@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    public CharacterController controller;
+    public Transform cam;
+    public Animator ani;
+    public int speed, jumpSpeed;
+    float jumpDir;
+    float gravity = 10;
+    float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+
+
+    private void Update()
+    {
+        Movement();
+
+    }
+
+    void Movement()
+    {
+        float x_move = Input.GetAxisRaw("Horizontal");
+        float z_move = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(x_move, 0, z_move).normalized;
+
+        if ( direction.magnitude >= 0.1f )
+        {
+            ani.SetBool("Walking", true);
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0, angle, 0);
+            Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+
+            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+        }
+        else
+        {
+            ani.SetBool("Walking", false);
+        }
+
+        if ( Input.GetMouseButtonDown(1) )
+        {
+            jumpDir = jumpSpeed;
+            ani.SetBool("Walking", false);
+            ani.SetBool("Jump", true);
+
+        }
+        if ( Input.GetMouseButtonUp(1) )
+        {
+            ani.SetBool("Jump", false);
+        }
+
+        jumpDir -= gravity * Time.deltaTime;
+        direction.y = jumpDir;
+        controller.Move(direction * 10 * Time.deltaTime);
+
+    }
+
+}
